@@ -166,7 +166,6 @@ def breadthFirstSearch(problem):
     output_list = []
 
     state_que = util.Queue()
-    direction_que = util.Queue()
 
 
     current_state = problem.getStartState()
@@ -217,7 +216,71 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+
+
+    from game import Directions
+    n = Directions.NORTH
+    s = Directions.SOUTH
+    e = Directions.EAST
+    w = Directions.WEST
+
+    visited_states = []
+
+    output_list = []
+
+    state_que = util.PriorityQueue()
+
+
+    current_state = problem.getStartState()
+    visited_states.append(current_state)
+
+    while problem.isGoalState(current_state) == False:
+        
+        surrounding = problem.getSuccessors(current_state)
+        for surr_states in surrounding:
+            if surr_states[0] not in visited_states:
+                temp_list = []
+                temp_list.append(surr_states[1])
+                temp_states = surr_states + (output_list + temp_list,)
+                state_que.push(temp_states, surr_states[2])
+                # print surr_states[2]
+
+
+
+        curr = state_que.pop()
+        current_state = curr[0]
+        output_list = curr[3]
+        visited_states.append(current_state)
+
+    # print output_list
+
+
+
+    final_list = []
+
+    for temp in output_list:
+
+        if temp == "East":
+            final_list.append(e)
+        if temp == "West":
+            final_list.append(w)
+        if temp == "North":
+            final_list.append(n)
+        if temp == "South":
+            final_list.append(s)
+
+
+    return final_list
+
+
+    # state  = problem.getStartState()
+    # print state
+    # print problem.isGoalState(state)
+    # print problem.getSuccessors(state)
+
+
+    # util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
     """
@@ -229,7 +292,67 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+
+
+
+    from game import Directions
+    n = Directions.NORTH
+    s = Directions.SOUTH
+    e = Directions.EAST
+    w = Directions.WEST
+
+    visited_states = []
+
+    output_list = []
+
+    state_que = util.PriorityQueue()
+
+
+    current_state = problem.getStartState()
+    visited_states.append(current_state)
+
+    while problem.isGoalState(current_state) == False:
+        
+        surrounding = problem.getSuccessors(current_state)
+        for surr_states in surrounding:
+            if surr_states[0] not in visited_states:
+                temp_list = []
+                temp_list.append(surr_states[1])
+                temp_states = surr_states + (output_list + temp_list,)
+                state_que.push(temp_states, surr_states[2]+heuristic(surr_states[0], problem))
+                # print surr_states[2]
+
+
+
+        curr = state_que.pop()
+        current_state = curr[0]
+        output_list = curr[3]
+        visited_states.append(current_state)
+
+    # print output_list
+
+
+
+    final_list = []
+
+    for temp in output_list:
+
+        if temp == "East":
+            final_list.append(e)
+        if temp == "West":
+            final_list.append(w)
+        if temp == "North":
+            final_list.append(n)
+        if temp == "South":
+            final_list.append(s)
+
+
+    return final_list
+    
+
+
+    # util.raiseNotDefined()
 
 
 # Abbreviations
