@@ -102,6 +102,8 @@ def depthFirstSearch(problem):
     current_state = problem.getStartState()
     visited_states.append(current_state)
 
+    # print "current_state", problem.getSuccessors(current_state)
+
     while problem.isGoalState(current_state) == False:
         count = 0
         surrounding = problem.getSuccessors(current_state)
@@ -130,15 +132,16 @@ def depthFirstSearch(problem):
     while direction_stk.isEmpty() == False:
 
         temp = direction_stk.pop()
+        final_stack_of_direction.push(temp)
         # print temp, "Directions"
-        if temp == "East":
-            final_stack_of_direction.push(e)
-        if temp == "West":
-            final_stack_of_direction.push(w)
-        if temp == "North":
-            final_stack_of_direction.push(n)
-        if temp == "South":
-            final_stack_of_direction.push(s)
+        # if temp == "East":
+        #     final_stack_of_direction.push(e)
+        # if temp == "West":
+        #     final_stack_of_direction.push(w)
+        # if temp == "North":
+        #     final_stack_of_direction.push(n)
+        # if temp == "South":
+        #     final_stack_of_direction.push(s)
 
 
     return_list = []
@@ -146,6 +149,7 @@ def depthFirstSearch(problem):
     while final_stack_of_direction.isEmpty() == False:
         return_list.append(final_stack_of_direction.pop())
 
+    # print return_list, "shh"
     return return_list
 
     # util.raiseNotDefined()
@@ -177,6 +181,7 @@ def breadthFirstSearch(problem):
         for surr_states in surrounding:
             if surr_states[0] not in visited_states:
                 temp_list = []
+                visited_states.append(surr_states[0])
                 temp_list.append(surr_states[1])
                 temp_states = surr_states + (output_list + temp_list,)
                 state_que.push(temp_states)
@@ -193,21 +198,21 @@ def breadthFirstSearch(problem):
 
 
 
-    final_list = []
+    # final_list = []
 
-    for temp in output_list:
+    # for temp in output_list:
 
-        if temp == "East":
-            final_list.append(e)
-        if temp == "West":
-            final_list.append(w)
-        if temp == "North":
-            final_list.append(n)
-        if temp == "South":
-            final_list.append(s)
+    #     if temp == "East":
+    #         final_list.append(e)
+    #     if temp == "West":
+    #         final_list.append(w)
+    #     if temp == "North":
+    #         final_list.append(n)
+    #     if temp == "South":
+    #         final_list.append(s)
 
 
-    return final_list
+    return output_list
     # return return_list
 
 
@@ -234,6 +239,7 @@ def uniformCostSearch(problem):
 
     current_state = problem.getStartState()
     visited_states.append(current_state)
+    cost = 0
 
     while problem.isGoalState(current_state) == False:
         
@@ -241,9 +247,10 @@ def uniformCostSearch(problem):
         for surr_states in surrounding:
             if surr_states[0] not in visited_states:
                 temp_list = []
+                visited_states.append(surr_states[0])
                 temp_list.append(surr_states[1])
-                temp_states = surr_states + (output_list + temp_list,)
-                state_que.push(temp_states, surr_states[2])
+                temp_states = (surr_states[0], surr_states[1], surr_states[2]+cost, (output_list + temp_list))
+                state_que.push(temp_states, temp_states[2])
                 # print surr_states[2]
 
 
@@ -251,27 +258,29 @@ def uniformCostSearch(problem):
         curr = state_que.pop()
         current_state = curr[0]
         output_list = curr[3]
+        cost = curr[2]
         visited_states.append(current_state)
 
     # print output_list
 
 
 
-    final_list = []
+    # final_list = []
 
-    for temp in output_list:
+    # for temp in output_list:
 
-        if temp == "East":
-            final_list.append(e)
-        if temp == "West":
-            final_list.append(w)
-        if temp == "North":
-            final_list.append(n)
-        if temp == "South":
-            final_list.append(s)
+    #     if temp == "East":
+    #         final_list.append(e)
+    #     if temp == "West":
+    #         final_list.append(w)
+    #     if temp == "North":
+    #         final_list.append(n)
+    #     if temp == "South":
+    #         final_list.append(s)
 
 
-    return final_list
+    # print final_list, 'final_list'
+    return output_list
 
 
     # state  = problem.getStartState()
@@ -311,6 +320,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     current_state = problem.getStartState()
     visited_states.append(current_state)
+    cost = 0
 
     while problem.isGoalState(current_state) == False:
         
@@ -318,9 +328,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         for surr_states in surrounding:
             if surr_states[0] not in visited_states:
                 temp_list = []
+                visited_states.append(surr_states[0])
                 temp_list.append(surr_states[1])
-                temp_states = surr_states + (output_list + temp_list,)
-                state_que.push(temp_states, surr_states[2]+heuristic(surr_states[0], problem))
+                temp_states = (surr_states[0], surr_states[1], surr_states[2]+cost, (output_list + temp_list))
+                state_que.push(temp_states, temp_states[2]+heuristic(temp_states[0], problem))
                 # print surr_states[2]
 
 
@@ -334,21 +345,21 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
 
 
-    final_list = []
+    # final_list = []
 
-    for temp in output_list:
+    # for temp in output_list:
 
-        if temp == "East":
-            final_list.append(e)
-        if temp == "West":
-            final_list.append(w)
-        if temp == "North":
-            final_list.append(n)
-        if temp == "South":
-            final_list.append(s)
+    #     if temp == "East":
+    #         final_list.append(e)
+    #     if temp == "West":
+    #         final_list.append(w)
+    #     if temp == "North":
+    #         final_list.append(n)
+    #     if temp == "South":
+    #         final_list.append(s)
 
 
-    return final_list
+    return output_list
     
 
 
