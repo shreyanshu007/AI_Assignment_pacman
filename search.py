@@ -189,7 +189,8 @@ def breadthFirstSearch(problem):
 
 
 
-        curr = state_que.pop()
+        curr = state_que.pop()   # c= [(1,2)],   c = [((1,2), (1,2,3,4))]
+        # print(curr)
         current_state = curr[0]
         output_list = curr[3]
         visited_states.append(current_state)
@@ -238,20 +239,20 @@ def uniformCostSearch(problem):
 
 
     current_state = problem.getStartState()
-    visited_states.append(current_state)
     cost = 0
 
     while problem.isGoalState(current_state) == False:
         
-        surrounding = problem.getSuccessors(current_state)
-        for surr_states in surrounding:
-            if surr_states[0] not in visited_states:
-                temp_list = []
-                visited_states.append(surr_states[0])
-                temp_list.append(surr_states[1])
-                temp_states = (surr_states[0], surr_states[1], surr_states[2]+cost, (output_list + temp_list))
-                state_que.push(temp_states, temp_states[2])
-                # print surr_states[2]
+        if current_state not in visited_states:
+            visited_states.append(current_state)
+            surrounding = problem.getSuccessors(current_state)
+            for surr_states in surrounding:
+                if surr_states[0] not in visited_states:
+                    temp_list = []
+                    temp_list.append(surr_states[1])
+                    temp_states = (surr_states[0], surr_states[1], surr_states[2]+cost, (output_list + temp_list))
+                    state_que.update(temp_states, temp_states[2])
+
 
 
 
@@ -259,34 +260,9 @@ def uniformCostSearch(problem):
         current_state = curr[0]
         output_list = curr[3]
         cost = curr[2]
-        visited_states.append(current_state)
+        
 
-    # print output_list
-
-
-
-    # final_list = []
-
-    # for temp in output_list:
-
-    #     if temp == "East":
-    #         final_list.append(e)
-    #     if temp == "West":
-    #         final_list.append(w)
-    #     if temp == "North":
-    #         final_list.append(n)
-    #     if temp == "South":
-    #         final_list.append(s)
-
-
-    # print final_list, 'final_list'
     return output_list
-
-
-    # state  = problem.getStartState()
-    # print state
-    # print problem.isGoalState(state)
-    # print problem.getSuccessors(state)
 
 
     # util.raiseNotDefined()
@@ -319,27 +295,31 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
 
     current_state = problem.getStartState()
-    visited_states.append(current_state)
+    # visited_states.append(current_state)
     cost = 0
 
     while problem.isGoalState(current_state) == False:
         
-        surrounding = problem.getSuccessors(current_state)
-        for surr_states in surrounding:
-            if surr_states[0] not in visited_states:
-                temp_list = []
-                visited_states.append(surr_states[0])
-                temp_list.append(surr_states[1])
-                temp_states = (surr_states[0], surr_states[1], surr_states[2]+cost, (output_list + temp_list))
-                state_que.push(temp_states, temp_states[2]+heuristic(temp_states[0], problem))
-                # print surr_states[2]
+        
+        if current_state not in visited_states:
+            visited_states.append(current_state)
+            surrounding = problem.getSuccessors(current_state)
+            for surr_states in surrounding:
+                if surr_states[0] not in visited_states:
+                    temp_list = []
+                    # visited_states.append(surr_states[0])
+                    temp_list.append(surr_states[1])
+                    temp_states = (surr_states[0], surr_states[1], surr_states[2]+cost, (output_list + temp_list))
+                    state_que.update(temp_states, temp_states[2]+heuristic(temp_states[0], problem))
+                    # print surr_states[2]
 
 
 
         curr = state_que.pop()
         current_state = curr[0]
         output_list = curr[3]
-        visited_states.append(current_state)
+        cost = curr[2]
+        # visited_states.append(current_state)
 
     # print output_list
 
